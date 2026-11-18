@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+/* Design tokens. Tailwind v4 reads @theme and creates the utilities from it:
+   bg-forest, text-linen, border-line, bg-sage, text-sand, font-display, font-body.
+   The hex values below are matched to the colours already used in listings.js
+   and HeroCarousel.js. Adjust them here if you want a different palette. */
+@theme {
+  --color-forest: #1f2b24;
+  --color-linen: #f4f1ea;
+  --color-sage: #556b58;
+  --color-sand: #c7b899;
+  --color-line: #3d3a34;
+
+  /* --font-cormorant and --font-manrope are set by next/font in app/layout.js */
+  --font-display: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --background: #f4f1ea;
+  --foreground: #1f2b24;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* ---- Big outlined numeral / word behind content ---- */
+.el-ghost {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(31, 43, 36, 0.14);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ---- "Why Elena" step focus: photo is blurred until its step is active ---- */
+.el-focus {
+  filter: blur(8px) grayscale(0.4);
+  opacity: 0.5;
+  transform: scale(0.96);
+  transition:
+    filter 0.8s ease,
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.el-focus[data-active="true"] {
+  filter: none;
+  opacity: 1;
+  transform: none;
+}
+.el-dim {
+  opacity: 0.3;
+  transition: opacity 0.6s ease;
+}
+.el-dim[data-active="true"] {
+  opacity: 1;
+}
+
+/* ---- Pop animation for the changing numeral ---- */
+@keyframes el-pop {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.el-pop {
+  animation: el-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---- Review cards: the centred card jumps up and gains a deeper shadow ---- */
+.el-card {
+  opacity: 0.72;
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.6s ease,
+    opacity 0.5s ease;
+}
+.el-card[data-active="true"] {
+  opacity: 1;
+  transform: translateY(-26px) scale(1.04);
+  box-shadow: 0 40px 70px -20px rgba(0, 0, 0, 0.65);
+}
+
+/* ---- Respect reduced-motion settings ---- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .el-focus {
+    filter: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .el-dim {
+    opacity: 1;
+    transition: none;
+  }
+  .el-pop {
+    animation: none;
+  }
+  .el-card {
+    transition: none;
+  }
+}

@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Elmsworth Properties
 
-## Getting Started
+A demo website for **Elena Marsh, Realtor**, a fictional independent real estate agent serving Maple Ridge, Ashford and Millbrook.
 
-First, run the development server:
+**Live demo:** https://elmsworth-demo.derin-obasa.workers.dev/
+
+> Elmsworth Properties, Elena Marsh, the listings, addresses and reviews are all fictional. This site was built for the MyClickAid demo gallery and does not represent a real business. Do not use any of the content as real.
+
+## What it shows
+
+- **Photo hero carousel** on the home page with a slow crossfade between property photos
+- **Featured listings** and a full **listings page** with 15 fictitious homes (single family, townhouse, condo) across three neighbourhoods
+- **Listing detail pages** with price, beds, baths, square footage, description and highlights
+- **"Why Elena" section** with a pinned heading and reasons that come into focus as you scroll
+- **Count-up stats** ("Elena by the numbers") that animate when scrolled into view
+- **Client reviews carousel** with star ratings and a computed average
+- **Mortgage calculator** for estimating monthly payments
+- **Inquiry and contact forms** (demo only, nothing is sent)
+- Fade-in on scroll, responsive header and footer, and an About page
+
+## Built with
+
+- [Next.js](https://nextjs.org/) (App Router, JavaScript)
+- [Tailwind CSS v4](https://tailwindcss.com/)
+- Cormorant Garamond and Manrope via `next/font/google`
+- Static export (`output: "export"`), hosted on Cloudflare
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 to view it.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+To build the static site:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+The output goes to the `out/` folder.
 
-To learn more about Next.js, take a look at the following resources:
+## Project structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/
+  _components/   Header, Footer, HeroCarousel, ListingCard, ListingPhoto,
+                 ListingsClient, WhyElena, CountUp, ReviewsCarousel, Stars,
+                 MortgageCalculator, InquiryForm, ContactClient, FadeInSection
+  _lib/          listings.js, reviews.js, format.js (data and helpers)
+  _style/        globals.css (Tailwind theme and colours)
+  about/         About page
+  contact/       Contact page
+  listings/      Listings index and detail pages
+  layout.js      Fonts, metadata, header and footer
+  page.js        Home page
+public/          Property photos (elim1 to elim15)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Photos
 
-## Deploy on Vercel
+Property photos live in `public/` as `elim1` to `elim15` (`.png` and `.webp`) and are imported statically, so Next.js reads each image's real dimensions. The home hero and the "Why Elena" section reuse the listing photos as placeholders.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To swap a photo, replace the file with the same name, or update the import at the top of `app/_lib/listings.js` or `app/page.js`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Editing the content
+
+- **Listings:** edit the array in `app/_lib/listings.js`. Set `featured: true` to show a home on the home page.
+- **Reviews:** edit `app/_lib/reviews.js`. The average rating is calculated automatically.
+- **Stats:** edit the `achievements` list at the top of `app/page.js`.
+
+## Deployment
+
+The site exports to static files (`out/`) and deploys to Cloudflare Workers with static assets. Connect the GitHub repo, use `npm run build` as the build command, and let Cloudflare serve the `out` directory.
+
+## About MyClickAid
+
+MyClickAid builds websites for small businesses. This project is one of a gallery of fictional demo sites that show what we can do for different industries.
